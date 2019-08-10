@@ -3,7 +3,8 @@ pkgs <- c('showtext', "shiny", 'tidyverse', 'shinythemes', 'shinyjs', 'shinydash
           'data.table', 'reshape2', 'lubridate', 'stringr')
 lapply(pkgs, require, character.only = TRUE)
 showtext_auto()
-
+Sys.setenv(NLS_LANG="TRADITIONAL CHINESE_TAIWAN.UTF8")
+Sys.setlocale(category = "LC_ALL", locale = "zh_TW.UTF-8")
 #font_add("jh", "msjh.ttc")
 options(shiny.usecairo = FALSE)
 # setwd("/Users/dtseng02/Documents/Dennis/ntucourse")
@@ -21,8 +22,7 @@ options(shiny.usecairo = FALSE)
 # gg %>% as_tibble() %>%
 #   mutate(expr_value = str_c("'",value, "'=", "'",value, "'")) %>%
 #   pull(expr_value) %>% str_c(collapse = ", ")# %>% write_clip()
-aaaaa = 5
-bbbbb = 6
+
 table_tidy_final <- read_rds("table_tidy_final.rds")
 table_index <- table_tidy_final %>% select(matches("課程_"))
 table_teacher <- table_tidy_final %>% select(課程_ID, matches("老師_"))
