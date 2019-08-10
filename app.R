@@ -1,8 +1,9 @@
-pkgs <- c('showtext', "shiny", 'tidyverse', 'rlang', 'shinythemes', 'shinyjs', 'shinydashboard',
-          'tidyverse','googlesheets','openxlsx','psych','clipr','formattable', 'shinyWidgets', 'DT',
-          'data.table', "magrittr", 'reshape2', 'lubridate', 'stringr', 'dplyr', 'tidyr')
+pkgs <- c('showtext', "shiny", 'tidyverse', 'shinythemes', 'shinyjs', 'shinydashboard',
+          'psych','clipr','formattable', 'shinyWidgets', 'DT',
+          'data.table', 'reshape2', 'lubridate', 'stringr')
 lapply(pkgs, require, character.only = TRUE)
 showtext_auto()
+
 #font_add("jh", "msjh.ttc")
 options(shiny.usecairo = FALSE)
 # setwd("/Users/dtseng02/Documents/Dennis/ntucourse")
