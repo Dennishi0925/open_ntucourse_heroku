@@ -21,6 +21,7 @@ options(shiny.usecairo = FALSE)
 #   mutate(expr_value = str_c("'",value, "'=", "'",value, "'")) %>%
 #   pull(expr_value) %>% str_c(collapse = ", ")# %>% write_clip()
 aaaaa = 5
+bbbbb = 6
 table_tidy_final <- read_rds("table_tidy_final.rds")
 table_index <- table_tidy_final %>% select(matches("課程_"))
 table_teacher <- table_tidy_final %>% select(課程_ID, matches("老師_"))
