@@ -20,7 +20,7 @@ options(shiny.usecairo = FALSE)
 # gg %>% as_tibble() %>%
 #   mutate(expr_value = str_c("'",value, "'=", "'",value, "'")) %>%
 #   pull(expr_value) %>% str_c(collapse = ", ")# %>% write_clip()
-
+aaaaa = 5
 table_tidy_final <- read_rds("table_tidy_final.rds")
 table_index <- table_tidy_final %>% select(matches("課程_"))
 table_teacher <- table_tidy_final %>% select(課程_ID, matches("老師_"))
@@ -43,7 +43,7 @@ table_index_print <- table_index %>%
   select(課程_ID, 課程_名稱, 課程_流水號, 課程_授課對象, 課程_課號, 課程_班次, 課程_學分, 課程_必_選修, 課程_授課教師, 課程_加選方式, 課程_時間教室, 課程_總人數, 課程_選課限制條件)
 table_detail_print <- table_detail %>% select(-詳細_schedule) 
 
-# statedata <- readRDS("statedata.rds")
+# statedata <- read_rds("statedata.rds")
 
 mapcolors <- c("#808080", "#B2182B", "#8D2B4B", "#693F6B", "#45528B", "#2166AC")
 #colnames(table_index_print)
