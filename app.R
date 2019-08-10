@@ -5,7 +5,7 @@ lapply(pkgs, require, character.only = TRUE)
 showtext_auto()
 #font_add("jh", "msjh.ttc")
 options(shiny.usecairo = FALSE)
-setwd("/Users/dtseng02/Documents/Dennis/ntucourse")
+# setwd("/Users/dtseng02/Documents/Dennis/ntucourse")
 
 # jie = c(1:10, "A","B","C")
 # day = c("一","二","三","四","五","六")
