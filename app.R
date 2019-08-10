@@ -25,8 +25,8 @@ options(shiny.usecairo = FALSE)
 
 table_tidy_final <- read_rds("table_tidy_final.rds")
 table_index <- table_tidy_final %>% select(matches("課程_"))
-table_teacher <- table_tidy_final %>% select(課程_ID, matches("老師_"))
-table_detail <- table_tidy_final %>% select(課程_ID, 課程_授課教師, 課程_名稱, matches("詳細_"))
+table_teacher <- table_tidy_final %>% select(`課程_ID`, matches("老師_"))
+table_detail <- table_tidy_final %>% select(`課程_ID`, `課程_授課教師`, `課程_名稱`, matches("詳細_"))
 
 # Define UI for application that plots features of movies
 library(shiny)
@@ -36,14 +36,14 @@ library(shinythemes)
 
 # table_index <- readRDS("table_index.rds")
 # table_index %>% select(matches("授課對象"), everything()) %>%
-#   distinct(課程_授課對象) %>% count()
-#   filter(str_detect(課程_授課對象_A, '系'))
+#   distinct(`課程_授課對象`) %>% count()
+#   filter(str_detect(`課程_授課對象`_A, '系'))
 # table_index %>% get_colnames()
 table_index_print <- table_index %>%
-  mutate(課程_授課對象 = as.factor(課程_授課對象)) %>%
-  mutate(課程_學分 = as.factor(課程_學分)) %>%
-  select(課程_ID, 課程_名稱, 課程_流水號, 課程_授課對象, 課程_課號, 課程_班次, 課程_學分, 課程_必_選修, 課程_授課教師, 課程_加選方式, 課程_時間教室, 課程_總人數, 課程_選課限制條件)
-table_detail_print <- table_detail %>% select(-詳細_schedule) 
+  mutate(`課程_授課對象` = as.factor(`課程_授課對象`)) %>%
+  mutate(`課程_學分` = as.factor(`課程_學分`)) %>%
+  select(`課程_ID`, `課程_名稱`, 課程_流水號, `課程_授課對象`, `課程_課號`, `課程_班次`, `課程_學分`, `課程_必_選修`, `課程_授課教師`, `課程_加選方式`, `課程_時間教室`, `課程_總人數`, `課程_選課限制條件`)
+table_detail_print <- table_detail %>% select(-`詳細_schedule`) 
 
 # statedata <- read_rds("statedata.rds")
 
@@ -136,15 +136,15 @@ ui <- fluidPage(theme = shinytheme("yeti"),
                                                             )
                                        ),
                                        column(4,
-                                              selectizeInput("課程_學分", "Choose 課程_學分",
-                                                             c("All"= "All", levels(table_index_print$課程_學分)),
+                                              selectizeInput("`課程_學分`", "Choose `課程_學分`",
+                                                             c("All"= "All", levels(table_index_print$`課程_學分`)),
                                                              multiple = TRUE,
                                                              selected = "3",
                                                              width = '200px'
                                               )),
                                        column(4,
-                                              selectizeInput("課程_授課對象", "Choose State(s)",
-                                                             c("All"= "All", levels(table_index_print$課程_授課對象)),
+                                              selectizeInput("`課程_授課對象`", "Choose State(s)",
+                                                             c("All"= "All", levels(table_index_print$`課程_授課對象`)),
                                                              multiple = TRUE,
                                                              selected = "工管系",
                                                              width = '200px'
@@ -155,10 +155,10 @@ ui <- fluidPage(theme = shinytheme("yeti"),
                             # tabPanel("Course Info", align="center", numericInput("length","Length",0,0,10)
                             #          ),
                             # tabPanel("Course Info", inputPanel(
-                            #   numericInput("課程_ID2", label = "課程ID:", 0, min(table_index_print$課程_ID), max(table_index_print$課程_ID))
+                            #   numericInput("`課程_ID`2", label = "課程ID:", 0, min(table_index_print$`課程_ID`), max(table_index_print$`課程_ID`))
                             # ),
                             tabPanel("Course Info", textOutput("page2"),
-                                     #numericInput("課程_ID2", label = "課程ID:", 0, min(table_index_print$課程_ID), max(table_index_print$課程_ID)),
+                                     #numericInput("`課程_ID`2", label = "課程ID:", 0, min(table_index_print$`課程_ID`), max(table_index_print$`課程_ID`)),
                                      DT::dataTableOutput("table2"),getdeps()
                                      ),
                             
@@ -196,40 +196,40 @@ ui <- fluidPage(theme = shinytheme("yeti"),
 server <- function(input, output) {
   
   output$data <- renderDataTable({
-    weekday = c(input$星期一,input$星期二,input$星期三,input$星期四,input$星期五,input$星期六)
+    weekday = c(input$`星期一`,input$`星期二`,input$`星期三`,input$`星期四`,input$`星期五`,input$`星期六`)
 
-    if ("All" %in% input$課程_學分 & "All" %in% input$課程_授課對象)
+    if ("All" %in% input$`課程_學分` & "All" %in% input$`課程_授課對象`)
       datatable(data.frame(table_index_print  %>%
-                             mutate(課程_ID = paste0("<a href='#table2'", "alt='",課程_ID,                                    
-                                                   "'onclick=\"tabs = $('.tabbable .nav.nav-tabs li');tabs.each(function() {$(this).removeClass('active')});$(tabs[1]).addClass('active');tabsContents = $('.tabbable .tab-content .tab-pane');tabsContents.each(function() {$(this).removeClass('active')});$(tabsContents[1]).addClass('active');$('#table2').trigger('change').trigger('shown');Shiny.onInputChange('課程_ID', getAttribute('alt'));\">",
-                                                   課程_ID,"</a>"))
+                             mutate(`課程_ID` = paste0("<a href='#table2'", "alt='",`課程_ID`,                                    
+                                                   "'onclick=\"tabs = $('.tabbable .nav.nav-tabs li');tabs.each(function() {$(this).removeClass('active')});$(tabs[1]).addClass('active');tabsContents = $('.tabbable .tab-content .tab-pane');tabsContents.each(function() {$(this).removeClass('active')});$(tabsContents[1]).addClass('active');$('#table2').trigger('change').trigger('shown');Shiny.onInputChange('`課程_ID`', getAttribute('alt'));\">",
+                                                   `課程_ID`,"</a>"))
       ),filter = list(position = 'top', clear = FALSE), escape = FALSE)
-    else if ("All" %in% input$課程_學分 & input$課程_授課對象 != "All")
-      datatable(data.frame(table_index_print %>% filter(課程_授課對象 %in% input$課程_授課對象)  %>%
-                             mutate(課程_ID = paste0("<a href='#table2'", "alt='",課程_ID,                                    
-                                                   "'onclick=\"tabs = $('.tabbable .nav.nav-tabs li');tabs.each(function() {$(this).removeClass('active')});$(tabs[1]).addClass('active');tabsContents = $('.tabbable .tab-content .tab-pane');tabsContents.each(function() {$(this).removeClass('active')});$(tabsContents[1]).addClass('active');$('#table2').trigger('change').trigger('shown');Shiny.onInputChange('課程_ID', getAttribute('alt'));\">",
-                                                   課程_ID,"</a>"))
+    else if ("All" %in% input$`課程_學分` & input$`課程_授課對象` != "All")
+      datatable(data.frame(table_index_print %>% filter(`課程_授課對象` %in% input$`課程_授課對象`)  %>%
+                             mutate(`課程_ID` = paste0("<a href='#table2'", "alt='",`課程_ID`,                                    
+                                                   "'onclick=\"tabs = $('.tabbable .nav.nav-tabs li');tabs.each(function() {$(this).removeClass('active')});$(tabs[1]).addClass('active');tabsContents = $('.tabbable .tab-content .tab-pane');tabsContents.each(function() {$(this).removeClass('active')});$(tabsContents[1]).addClass('active');$('#table2').trigger('change').trigger('shown');Shiny.onInputChange('`課程_ID`', getAttribute('alt'));\">",
+                                                   `課程_ID`,"</a>"))
       ),filter = list(position = 'top', clear = FALSE), escape = FALSE)# %>% arrange(desc(college))
-    else if (input$課程_學分 != "All" & "All" %in% input$課程_授課對象)
-      datatable(data.frame(table_index_print %>% filter(課程_學分 %in% input$課程_學分) %>%
-                             mutate(課程_ID = paste0("<a href='#table2'", "alt='",課程_ID,                                    
-                                                   "'onclick=\"tabs = $('.tabbable .nav.nav-tabs li');tabs.each(function() {$(this).removeClass('active')});$(tabs[1]).addClass('active');tabsContents = $('.tabbable .tab-content .tab-pane');tabsContents.each(function() {$(this).removeClass('active')});$(tabsContents[1]).addClass('active');$('#table2').trigger('change').trigger('shown');Shiny.onInputChange('課程_ID', getAttribute('alt'));\">",
-                                                   課程_ID,"</a>"))
+    else if (input$`課程_學分` != "All" & "All" %in% input$`課程_授課對象`)
+      datatable(data.frame(table_index_print %>% filter(`課程_學分` %in% input$`課程_學分`) %>%
+                             mutate(`課程_ID` = paste0("<a href='#table2'", "alt='",`課程_ID`,                                    
+                                                   "'onclick=\"tabs = $('.tabbable .nav.nav-tabs li');tabs.each(function() {$(this).removeClass('active')});$(tabs[1]).addClass('active');tabsContents = $('.tabbable .tab-content .tab-pane');tabsContents.each(function() {$(this).removeClass('active')});$(tabsContents[1]).addClass('active');$('#table2').trigger('change').trigger('shown');Shiny.onInputChange('`課程_ID`', getAttribute('alt'));\">",
+                                                   `課程_ID`,"</a>"))
       ),filter = list(position = 'top', clear = FALSE), escape = FALSE)# %>% arrange(desc(college))
     else
       datatable(data.frame(table_index_print %>%
-                             filter(str_detect(課程_必_選修,str_c(input$必選修, collapse = "|"))) %>%#weekday
-                             filter(str_detect(課程_時間教室,str_c(weekday, collapse = "|"))) %>%#weekday
+                             filter(str_detect(`課程_必_選修`,str_c(input$`必選修`, collapse = "|"))) %>%#weekday
+                             filter(str_detect(`課程_時間教室`,str_c(weekday, collapse = "|"))) %>%#weekday
                              # filter(str_detect(課程_時間教室,str_c(input$星期一, collapse = "|"))) %>%
                              # filter(str_detect(課程_時間教室,str_c(input$星期二, collapse = "|"))) %>%
                              # filter(str_detect(課程_時間教室,str_c(input$星期三, collapse = "|"))) %>%
                              # filter(str_detect(課程_時間教室,str_c(input$星期四, collapse = "|"))) %>%
                              # filter(str_detect(課程_時間教室,str_c(input$星期五, collapse = "|"))) %>%
                              # filter(str_detect(課程_時間教室,str_c(input$星期六, collapse = "|"))) %>%
-                             filter(課程_學分 %in% input$課程_學分) %>% filter(課程_授課對象 %in% input$課程_授課對象) %>%
-                             mutate(課程_ID = paste0("<a href='#table2'", "alt='",課程_ID,                                    
-                                                   "'onclick=\"tabs = $('.tabbable .nav.nav-tabs li');tabs.each(function() {$(this).removeClass('active')});$(tabs[1]).addClass('active');tabsContents = $('.tabbable .tab-content .tab-pane');tabsContents.each(function() {$(this).removeClass('active')});$(tabsContents[1]).addClass('active');$('#table2').trigger('change').trigger('shown');Shiny.onInputChange('課程_ID', getAttribute('alt'));\">",
-                                                   課程_ID,"</a>"))
+                             filter(`課程_學分` %in% input$`課程_學分`) %>% filter(`課程_授課對象` %in% input$`課程_授課對象`) %>%
+                             mutate(`課程_ID` = paste0("<a href='#table2'", "alt='",`課程_ID`,                                    
+                                                   "'onclick=\"tabs = $('.tabbable .nav.nav-tabs li');tabs.each(function() {$(this).removeClass('active')});$(tabs[1]).addClass('active');tabsContents = $('.tabbable .tab-content .tab-pane');tabsContents.each(function() {$(this).removeClass('active')});$(tabsContents[1]).addClass('active');$('#table2').trigger('change').trigger('shown');Shiny.onInputChange('`課程_ID`', getAttribute('alt'));\">",
+                                                   `課程_ID`,"</a>"))
       ),filter = list(position = 'top', clear = FALSE), escape = FALSE)
   }
   #,escape = FALSE
@@ -246,8 +246,8 @@ server <- function(input, output) {
   #     
   #     tabs = $(".tabbable .nav.nav-tabs li a");
   #     var data=table.row(this).data();
-  #     document.getElementById("課程_ID").value=data[1];
-  #     Shiny.onInputChange("課程_ID",data[1]);
+  #     document.getElementById("`課程_ID`").value=data[1];
+  #     Shiny.onInputChange("`課程_ID`",data[1]);
   #     $(tabs[1]).click();
   #     table.row(this).deselect();
   # })'
@@ -261,12 +261,12 @@ server <- function(input, output) {
     # if(is.null(selected)){
     #   datatable(table_detail_print)
     # } else {
-    #   datatable(table_detail_print %>% filter(課程_ID==input$課程_ID) %>% select(-課程_ID) %>% transpose_df())
+    #   datatable(table_detail_print %>% filter(`課程_ID`==input$`課程_ID`) %>% select(-`課程_ID`) %>% transpose_df())
     # }
     # 
-    if(!is.null(input$課程_ID)){
-      datatable(table_detail_print %>% filter(課程_ID==input$課程_ID) %>% select(-課程_ID) %>% transpose_df())
-    # }else if(!is.null(input$課程_ID2)){
+    if(!is.null(input$`課程_ID`)){
+      datatable(table_detail_print %>% filter(`課程_ID`==input$`課程_ID`) %>% select(-`課程_ID`) %>% transpose_df())
+    # }else if(!is.null(input$`課程_ID`2)){
     #   datatable(table_detail_print)
     }else {
       datatable(table_detail_print)
@@ -274,14 +274,14 @@ server <- function(input, output) {
   })
   
   output$page2 <- renderText({
-    #print(input$課程_ID)
-    course_name_print = table_index_print %>% filter(課程_ID == input$課程_ID) %>% pull(課程_名稱)
+    #print(input$`課程_ID`)
+    course_name_print = table_index_print %>% filter(`課程_ID` == input$`課程_ID`) %>% pull(`課程_名稱`)
     paste0("Detailed course information for  ", course_name_print, " :")
 
   })
   
 }
-# table_detail_print %>% filter(課程_ID == 8800)
+# table_detail_print %>% filter(`課程_ID` == 8800)
 shinyApp(ui = ui, server = server)
 
 ###尚缺的功能
